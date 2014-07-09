@@ -40,10 +40,52 @@ output => /net/netfilter/xt_owner.ko
 net/ipv4/netfilter/ipt_REJECT.ko
 net/ipv4/netfilter/ipt_LOG.ko
 
-copy to phone (root explorer or adb)
+modinfo:
+filename:       ipt_LOG.ko
+description:    Xtables: IPv4 packet logging to syslog
+author:         Netfilter Core Team <coreteam@netfilter.org>
+license:        GPL
+depends:
+vermagic:       2.6.29-perf preempt mod_unload ARMv6
+
+filename:       ipt_REJECT.ko
+description:    Xtables: packet "rejection" target for IPv4
+author:         Netfilter Core Team <coreteam@netfilter.org>
+license:        GPL
+depends:
+vermagic:       2.6.29-perf preempt mod_unload ARMv6
+
+filename:       xt_owner.ko
+alias:          ip6t_owner
+alias:          ipt_owner
+license:        GPL
+description:    Xtables: socket owner matching
+author:         Jan Engelhardt <jengelh@computergmbh.de>
+depends:
+vermagic:       2.6.29-perf preempt mod_unload ARMv6
+
+
+copy to phone in /system/lib/modules (root explorer or adb)
+test:
+cd /system/lib/modules
 insmod xt_owner.ko
 insmod ipt_REJECT.ko
 insmod ipt_LOG.ko
 
-save to init script
+can't save to init script because init.rc is NAND locked
+
+create script /system/bin/iptmods.sh (don't forget to add execute permissions) <= droidwall custom script
+#!/system/bin/sh
+cd /system/lib/modules
+# activates modules needed by droidwall
+insmod xt_owner.ko
+insmod ipt_REJECT.ko
+# activates modules needed by droidwall's logging function
+insmod ipt_LOG.ko
+
+
+in droidwall use the custom startup script option and enter the path /system/bin/iptmods.sh
+
+boot the phone. droidwall will load the modules & apply the firewall rules
+
 
