@@ -9,10 +9,11 @@ Linux localhost 2.6.29-perf #2 PREEMPT Tue Nov 9 15:54:07 CST 2010 armv6l GNU/Li
 
 sudo apt-get install libncurses5-dev
 
-git clone http://android.git.linaro.org/git/kernel/common.git
-cd common/
+git clone http://android.git.linaro.org/git/platform/prebuilt.git
+cd prebuilt/
 git br -a
-git co -t remotes/origin/archive/android-2.6.29 -b android-2.6.29
+git co -t remotes/origin/eclair -b eclair
+
 cd ..
 
 git clone http://android.git.linaro.org/git/kernel/msm.git
@@ -24,7 +25,7 @@ export ARCH=arm
 export SUBARCH=arm
 export CROSS_COMPILE=~/android/wx445/prebuilt/linux-x86/toolchain/arm-eabi-4.4.0/bin/arm-eabi-
 make distclean
-make msm_defconfig OR make ARCH=arm CROSS_COMPILE=/home/dvr/android/wx445/prebuilt/linux-x86/toolchain/arm-eabi-4.4.0/bin/arm-eabi- msm_defconfig
+make msm_defconfig OR make ARCH=arm CROSS_COMPILE=~/android/wx445/prebuilt/linux-x86/toolchain/arm-eabi-4.4.0/bin/arm-eabi- msm_defconfig
 make menuconfig
 update .config with 
 CONFIG_LOCALVERSION="-perf"
